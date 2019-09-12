@@ -5,6 +5,7 @@ package lesson2.task1
 import lesson1.task1.discriminant
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -139,7 +140,12 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int = when {
+    ((a + b < c) or (a + c < b) or (b + c < a)) -> -1
+    ((a.pow(2) + b.pow(2) == c.pow(2)) or (a.pow(2) + c.pow(2) == b.pow(2)) or (b.pow(2) + c.pow(2) == a.pow(2))) -> 1
+    ((a.pow(2) + b.pow(2) < c.pow(2)) or (a.pow(2) + c.pow(2) < b.pow(2)) or (b.pow(2) + c.pow(2) < a.pow(2))) -> 2
+    else -> 0
+}
 
 /**
  * Средняя
