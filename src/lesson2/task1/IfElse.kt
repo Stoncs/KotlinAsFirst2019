@@ -88,10 +88,11 @@ fun timeForHalfWay(
     val second = v2 * t2
     val third = v3 * t3
     val half = (first + second + third) / 2
-    if (half <= (first)) return half / v1
-    else if (half <= (second + first)) return t1 + (half - first) / v2
-    else return t1 + t2 + (half - first - second) / v3
-
+    return when {
+        half <= first -> half / v1
+        half <= second + first -> t1 + (half - first) / v2
+        else -> t1 + t2 + (half - first - second) / v3
+    }
 }
 
 /**
