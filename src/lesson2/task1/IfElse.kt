@@ -143,12 +143,18 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = when {
-    ((a + b < c) || (a + c < b) || (b + c < a)) -> -1
-    ((a.pow(2) + b.pow(2) == c.pow(2)) || (a.pow(2) + c.pow(2) == b.pow(2)) || (b.pow(2) + c.pow(2) == a.pow(2))) -> 1
-    ((a.pow(2) + b.pow(2) < c.pow(2)) || (a.pow(2) + c.pow(2) < b.pow(2)) || (b.pow(2) + c.pow(2) < a.pow(2))) -> 2
-    else -> 0
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val maxSide = maxOf(a, b, c)
+    val minSide = minOf(a, b, c)
+    val averageSide = a + b + c - maxSide - minSide
+    return when {
+        a + b + c - maxSide < maxSide -> -1
+        minSide.pow(2) + averageSide.pow(2) == maxSide.pow(2) -> 1
+        minSide.pow(2) + averageSide.pow(2) < maxSide.pow(2) -> 2
+        else -> 0
+    }
 }
+
 
 /**
  * Средняя
