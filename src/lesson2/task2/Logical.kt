@@ -81,5 +81,5 @@ fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     val min = minOf(a, b, c)
     val max = maxOf(a, b, c)
     val average = a + b + c - min - max
-    return (min * average <= s * r) && (((min <= s) && (average <= r)) || ((min <=r) && (average <= s)))
+    return (min * average <= s * r) && (((min <= s) && (average <= r)) || ((min <= r) && (average <= s)))
 }
