@@ -118,7 +118,8 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..((n * 0.5).toInt()))
+    if (n % 2 == 0) return 2
+    for (i in 3..((n * 0.5).toInt()) step 2)
         if (n % i == 0) return i
     return n
 }
