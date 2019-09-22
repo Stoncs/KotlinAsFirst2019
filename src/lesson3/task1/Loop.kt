@@ -279,12 +279,12 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  */
 fun fibSequenceDigit(n: Int): Int {
     var number = 1
-    var i = 2
     var m = 1
     var k = 0
-    while (number / 10.0.pow(n - 1) < 1) {
-        m = 1
+    var i = 1
+    while ((number / 10.0.pow(n).toInt()) == 0) {
         k = fib(i)
+        m = 1
         while (k > 0) {
             k /= 10
             m *= 10
@@ -292,13 +292,6 @@ fun fibSequenceDigit(n: Int): Int {
         number = number * m + fib(i)
         i++
     }
-    if (m == 1) return 1
-    m = 0
-    k = (number / 10.0.pow(n)).toInt()
-    if (k == 0)
-    while (k > 0) {
-        k /= 10
-        m++
-    }
-    return (number % 10.0.pow(n) / 10.0.pow(m)).toInt()
+    m = n + 
+    return
 }
