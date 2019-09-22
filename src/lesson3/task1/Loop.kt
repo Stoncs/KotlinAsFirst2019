@@ -74,7 +74,7 @@ fun digitNumber(n: Int): Int {
     var count = 0
     var number = n
     if (n == 0) return 1
-    while (number > 0) {
+    while (abs(number) > 0) {
         count++
         number /= 10
     }
@@ -186,10 +186,10 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  */
 fun collatzSteps(x: Int): Int {
     var k = 0
-    var xnow = x
-    while (xnow != 1) {
-        if (xnow % 2 == 0) xnow /= 2
-        else xnow = 3 * xnow + 1
+    var xNow = x
+    while (xNow != 1) {
+        if (xNow % 2 == 0) xNow /= 2
+        else xNow = 3 * xNow + 1
         k++
     }
     return k
@@ -249,15 +249,15 @@ fun isPalindrome(n: Int): Boolean {
     var length = 0
     var number = n
     var k = 0
+    k = number
+    while (k > 0) {
+        k /= 10
+        length++
+    }
     while (number / 10 > 1) {
-        length = 0
-        k = number
-        while (k > 0) {
-            k /= 10
-            length++
-        }
         if ((number / 10.0.pow(length - 1)).toInt() != number % 10) return false
         number = (number % 10.0.pow(length - 1).toInt() / 10)
+        length -= 2
     }
     return true
 }
