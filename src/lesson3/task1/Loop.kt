@@ -2,6 +2,9 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
+import kotlin.math.abs
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -155,7 +158,15 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    var sqr1 = sqrt(m.toDouble()).toInt()
+    var sqr2 = sqrt(n.toDouble()).toInt()
+    for (i in 1..2) if ((sqr(sqr1) >= m) && (sqr(sqr1) <= n)) return true
+    else sqr1++
+    for (i in 1..2) if ((sqr(sqr2) >= m) && (sqr(sqr2) <= n)) return true
+    else sqr2--
+    return false
+}
 
 /**
  * Средняя
@@ -173,7 +184,16 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var k = 0
+    var xnow = x
+    while (xnow != 1) {
+        if (xnow % 2 == 0) xnow /= 2
+        else xnow = 3 * xnow + 1
+        k++
+    }
+    return k
+}
 
 /**
  * Средняя
@@ -184,7 +204,17 @@ fun collatzSteps(x: Int): Int = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var sin = x
+    var next = x.pow(3) / factorial(3)
+    var n = 0
+    while (abs(next) >= eps) {
+        sin += (-1.0.pow(n)) * (x.pow(2 * n + 1)) / factorial(2 * n + 1)
+        n++
+        next = (-1.0.pow(n)) * (x.pow(2 * n + 1)) / factorial(2 * n + 1)
+    }
+    return sin
+}
 
 /**
  * Средняя
@@ -247,4 +277,28 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var number = 1
+    var i = 2
+    var m = 1
+    var k = 0
+    while (number / 10.0.pow(n - 1) < 1) {
+        m = 1
+        k = fib(i)
+        while (k > 0) {
+            k /= 10
+            m *= 10
+        }
+        number = number * m + fib(i)
+        i++
+    }
+    if (m == 1) return 1
+    m = 0
+    k = (number / 10.0.pow(n)).toInt()
+    if (k == 0)
+    while (k > 0) {
+        k /= 10
+        m++
+    }
+    return (number % 10.0.pow(n) / 10.0.pow(m)).toInt()
+}
