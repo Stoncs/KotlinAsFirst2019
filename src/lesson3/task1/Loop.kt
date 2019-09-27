@@ -132,11 +132,8 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    for (i in (n * 0.5).toInt() downTo 2)
-        if (n % i == 0) return i
-    return 1
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
+
 
 /**
  * Простая
@@ -161,10 +158,12 @@ fun isCoPrime(m: Int, n: Int): Boolean {
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var sqr1 = sqrt(m.toDouble()).toInt()
     var sqr2 = sqrt(n.toDouble()).toInt()
-    for (i in 1..2) if ((sqr(sqr1) >= m) && (sqr(sqr1) <= n)) return true
-    else sqr1++
-    for (i in 1..2) if ((sqr(sqr2) >= m) && (sqr(sqr2) <= n)) return true
-    else sqr2--
+    for (i in 1..2)
+        if ((sqr(sqr1) >= m) && (sqr(sqr1) <= n)) return true
+        else sqr1++
+    for (i in 1..2)
+        if ((sqr(sqr2) >= m) && (sqr(sqr2) <= n)) return true
+        else sqr2--
     return false
 }
 
@@ -245,22 +244,8 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    var length = 0
-    var number = n
-    var k = 0
-    k = number
-    while (k > 0) {
-        k /= 10
-        length++
-    }
-    while (number / 10 > 1) {
-        if ((number / 10.0.pow(length - 1)).toInt() != number % 10) return false
-        number = (number % 10.0.pow(length - 1).toInt() / 10)
-        length -= 2
-    }
-    return true
-}
+fun isPalindrome(n: Int): Boolean = n == revert(n)
+
 
 /**
  * Средняя
@@ -273,13 +258,12 @@ fun isPalindrome(n: Int): Boolean {
 fun hasDifferentDigits(n: Int): Boolean {
     var number = n
     var l = 0
-    var array = emptyArray<Int>()
     while (number > 0) {
         l = number % 10
-        if (l !in array) array += l
+        if (l != n % 10) return true
         number /= 10
     }
-    return array.size > 1
+    return false
 }
 
 /**
