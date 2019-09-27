@@ -275,23 +275,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
-    var length = 0
-    var count = 0
-    var k = 0
-    var i = 1
-    while (length < n) {
-        k = sqr(i)
-        count = 0
-        while (k > 0) {
-            k /= 10
-            count++
-        }
-        length += count
-        i++
-    }
-    return (sqr(i - 1) / 10.0.pow(length - n) % 10).toInt()
-}
+fun squareSequenceDigit(n: Int): Int = sequenceDigit(n, false)
 
 /**
  * Сложная
@@ -302,20 +286,37 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int {
+fun fibSequenceDigit(n: Int): Int = sequenceDigit(n, true)
+
+
+fun sequenceDigit(n: Int, check: Boolean): Int {
     var length = 0
     var count = 0
     var k = 0
     var i = 1
-    while (length < n) {
-        k = fib(i)
-        count = 0
-        while (k > 0) {
-            k /= 10
-            count++
+    if (check) {
+        while (length < n) {
+            k = fib(i)
+            count = 0
+            while (k > 0) {
+                k /= 10
+                count++
+            }
+            length += count
+            i++
         }
-        length += count
-        i++
+        return (fib(i - 1) / 10.0.pow(length - n) % 10).toInt()
+    } else {
+        while (length < n) {
+            k = sqr(i)
+            count = 0
+            while (k > 0) {
+                k /= 10
+                count++
+            }
+            length += count
+            i++
+        }
+        return (sqr(i - 1) / 10.0.pow(length - n) % 10).toInt()
     }
-    return (fib(i - 1) / 10.0.pow(length - n) % 10).toInt()
 }
