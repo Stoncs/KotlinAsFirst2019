@@ -109,9 +109,9 @@ fun fib(n: Int): Int {
 fun lcm(m: Int, n: Int): Int {
     val max = maxOf(m, n)
     var k = 0
-    do
+    do {
         k += max
-    while ((k % m != 0) || (k % n != 0))
+    } while ((k % m != 0) || (k % n != 0))
     return k
 }
 
@@ -275,7 +275,23 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = sequenceDigit(n, false)
+fun squareSequenceDigit(n: Int): Int {
+    var length = 0
+    var count = 0
+    var k = 0
+    var i = 1
+    while (length < n) {
+        k = sqr(i)
+        count = 0
+        while (k > 0) {
+            k /= 10
+            count++
+        }
+        length += count
+        i++
+    }
+    return (sqr(i - 1) / 10.0.pow(length - n) % 10).toInt()
+}
 
 /**
  * Сложная
@@ -286,37 +302,20 @@ fun squareSequenceDigit(n: Int): Int = sequenceDigit(n, false)
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = sequenceDigit(n, true)
-
-
-fun sequenceDigit(n: Int, check: Boolean): Int {
+fun fibSequenceDigit(n: Int): Int {
     var length = 0
     var count = 0
     var k = 0
     var i = 1
-    if (check) {
-        while (length < n) {
-            k = fib(i)
-            count = 0
-            while (k > 0) {
-                k /= 10
-                count++
-            }
-            length += count
-            i++
+    while (length < n) {
+        k = fib(i)
+        count = 0
+        while (k > 0) {
+            k /= 10
+            count++
         }
-        return (fib(i - 1) / 10.0.pow(length - n) % 10).toInt()
-    } else {
-        while (length < n) {
-            k = sqr(i)
-            count = 0
-            while (k > 0) {
-                k /= 10
-                count++
-            }
-            length += count
-            i++
-        }
-        return (sqr(i - 1) / 10.0.pow(length - n) % 10).toInt()
+        length += count
+        i++
     }
+    return (fib(i - 1) / 10.0.pow(length - n) % 10).toInt()
 }
