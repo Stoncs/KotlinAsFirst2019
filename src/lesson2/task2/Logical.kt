@@ -43,15 +43,13 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    val month1: Array<Int> = arrayOf(1, 3, 5, 7, 8, 10, 12)
-    val month2: Array<Int> = arrayOf(4, 6, 9, 11)
-    val exceptions: Array<Int> = arrayOf(1700, 1800, 1900, 2100, 2200, 2300)
+    val month1 = arrayOf(1, 3, 5, 7, 8, 10, 12)
+    val month2 = arrayOf(4, 6, 9, 11)
     return when {
         month in month1 -> 31
         month in month2 -> 30
-        (year in exceptions) && (month == 2) -> 28
-        (month == 2) && (year % 4 != 0) -> 28
-        else -> 29
+        ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) && month == 2 -> 29
+        else -> 28
     }
 }
 

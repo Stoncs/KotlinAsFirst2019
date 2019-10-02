@@ -122,7 +122,7 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     if (n % 2 == 0) return 2
-    for (i in 3..((n * 0.5).toInt()) step 2)
+    for (i in 3..((sqrt(n.toDouble())).toInt()) step 2)
         if (n % i == 0) return i
     return n
 }
@@ -156,14 +156,10 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var sqr1 = sqrt(m.toDouble()).toInt()
-    var sqr2 = sqrt(n.toDouble()).toInt()
+    var number = sqrt(m.toDouble()).toInt()
     for (i in 1..2)
-        if ((sqr(sqr1) >= m) && (sqr(sqr1) <= n)) return true
-        else sqr1++
-    for (i in 1..2)
-        if ((sqr(sqr2) >= m) && (sqr(sqr2) <= n)) return true
-        else sqr2--
+        if ((sqr(number) >= m) && (sqr(number) <= n)) return true
+        else number++
     return false
 }
 
