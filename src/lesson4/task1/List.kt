@@ -5,6 +5,7 @@ package lesson4.task1
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import lesson3.task1.minDivisor
+import lesson6.task1.twoDigitStr
 import java.lang.Math.pow
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -337,4 +338,74 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val list = mutableListOf<String>()
+    var first = n / 1000
+    var second = n % 1000
+    if (first != 0) {
+        list += (threeSigns(first))
+        if (first % 10 == 1) list.add("одна")
+        if (first % 10 == 2) list.add("две")
+        when (first % 10) {
+            1 -> list.add("тысяча")
+            2 -> list.add("тысячи")
+            else -> list.add("тысяч")
+        }
+    }
+    list += (threeSigns(second))
+    if ((second % 10 == 1) && ((second % 100 < 10) || (second % 100 > 20))) list.add("одна")
+    if ((second % 10 == 2) && ((second % 100 < 10) || (second % 100 > 20))) list.add("два")
+    return list.joinToString(separator = " ")
+}
+
+fun threeSigns(k: Int): MutableList<String> {
+    var res = mutableListOf<String>()
+    val one = k / 100
+    val two = k / 10 % 10
+    val three = k % 10
+    when (one) {
+        1 -> res.add("сто")
+        2 -> res.add("двести")
+        3 -> res.add("триста")
+        4 -> res.add("четыреста")
+        5 -> res.add("пятьсот")
+        6 -> res.add("шестьсот")
+        7 -> res.add("семьсот")
+        8 -> res.add("восемьсот")
+        9 -> res.add("девятьсот")
+    }
+    if ((k % 100 <= 10) || (k % 100 >= 20)) {
+        when (two) {
+            1 -> res.add("десять")
+            2 -> res.add("двадцать")
+            3 -> res.add("тридцать")
+            4 -> res.add("сорок")
+            5 -> res.add("пятьдесят")
+            6 -> res.add("шестьдесят")
+            7 -> res.add("семьдесят")
+            8 -> res.add("восемьдесят")
+            9 -> res.add("девяносто")
+        }
+        when (three) {
+            3 -> res.add("три")
+            4 -> res.add("четыре")
+            5 -> res.add("пять")
+            6 -> res.add("шесть")
+            7 -> res.add("семь")
+            8 -> res.add("восемь")
+            9 -> res.add("девять")
+        }
+    } else
+        when (k % 100) {
+            11 -> res.add("одиннадцать")
+            12 -> res.add("двенадцать")
+            13 -> res.add("тринадцать")
+            14 -> res.add("четырнадцать")
+            15 -> res.add("пятнадцать")
+            16 -> res.add("шестнадцать")
+            17 -> res.add("семнадцать")
+            18 -> res.add("восемнадцать")
+            19 -> res.add("девятнадцать")
+        }
+    return res
+}
