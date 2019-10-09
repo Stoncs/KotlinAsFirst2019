@@ -339,22 +339,21 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
+    if (n == 0) return "ноль"
     val list = mutableListOf<String>()
     var first = n / 1000
     var second = n % 1000
     if (first != 0) {
         list += (threeSigns(first))
-        if (first % 10 == 1) list.add("одна")
-        if (first % 10 == 2) list.add("две")
-        when (first % 10) {
-            1 -> list.add("тысяча")
-            2 -> list.add("тысячи")
+        when {
+            ((first % 10 == 1) && ((first % 100 < 11) || (first % 100 > 20))) -> list.add("одна тысяча")
+            ((first % 10 == 2) && ((first % 100 < 11) || (first % 100 > 20))) -> list.add("две тысячи")
             else -> list.add("тысяч")
         }
     }
     list += (threeSigns(second))
-    if ((second % 10 == 1) && ((second % 100 < 10) || (second % 100 > 20))) list.add("одна")
-    if ((second % 10 == 2) && ((second % 100 < 10) || (second % 100 > 20))) list.add("два")
+    if ((second % 10 == 1) && ((second % 100 < 11) || (second % 100 > 20))) list.add("один")
+    if ((second % 10 == 2) && ((second % 100 < 12) || (second % 100 > 20))) list.add("два")
     return list.joinToString(separator = " ")
 }
 
