@@ -235,7 +235,7 @@ fun factorizeToString(n: Int): String {
 fun convert(n: Int, base: Int): List<Int> {
     var number = n
     var list = mutableListOf<Int>()
-    while (number > base) {
+    while (number >= base) {
         list.add(number % base)
         number /= base
     }
@@ -345,11 +345,12 @@ fun russian(n: Int): String {
     var second = n % 1000
     if (first != 0) {
         list += (threeSigns(first))
-        when {
-            ((first % 10 == 1) && ((first % 100 < 11) || (first % 100 > 20))) -> list.add("одна тысяча")
-            ((first % 10 == 2) && ((first % 100 < 11) || (first % 100 > 20))) -> list.add("две тысячи")
+        if ((first % 100 < 11) || (first % 100 > 20)) when {
+            (first % 10 == 1) -> list.add("одна тысяча")
+            (first % 10 == 2) -> list.add("две тысячи")
+            (first % 10 == 4) || (first % 10 == 3) -> list.add("тысячи")
             else -> list.add("тысяч")
-        }
+        } else list.add("тысяч")
     }
     list += (threeSigns(second))
     if ((second % 10 == 1) && ((second % 100 < 11) || (second % 100 > 20))) list.add("один")
