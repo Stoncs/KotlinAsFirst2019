@@ -152,7 +152,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
     var sum = 0.0
     for (i in list.indices)
         sum += list[i]
-    var mid = sum / list.size
+    val mid = sum / list.size
     for (i in list.indices)
         list[i] -= mid
     return list
@@ -204,7 +204,7 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
 fun factorize(n: Int): List<Int> {
     var number = n
     var div = 0
-    var list = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     while (number > 1) {
         div = minDivisor(number)
         list.add(div)
@@ -234,7 +234,7 @@ fun factorizeToString(n: Int): String {
  */
 fun convert(n: Int, base: Int): List<Int> {
     var number = n
-    var list = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     while (number >= base) {
         list.add(number % base)
         number /= base
@@ -255,7 +255,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    var list = convert(n, base)
+    val list = convert(n, base)
     var result = ""
     val letters = listOf(
         "a",
@@ -341,8 +341,8 @@ fun roman(n: Int): String = TODO()
 fun russian(n: Int): String {
     if (n == 0) return "ноль"
     val list = mutableListOf<String>()
-    var first = n / 1000
-    var second = n % 1000
+    val first = n / 1000
+    val second = n % 1000
     if (first != 0) {
         list += (threeSigns(first))
         if ((first % 100 < 11) || (first % 100 > 20)) when {
@@ -359,7 +359,7 @@ fun russian(n: Int): String {
 }
 
 fun threeSigns(k: Int): MutableList<String> {
-    var res = mutableListOf<String>()
+    val res = mutableListOf<String>()
     val one = k / 100
     val two = k / 10 % 10
     val three = k % 10
