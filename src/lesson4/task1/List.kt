@@ -5,9 +5,6 @@ package lesson4.task1
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import lesson3.task1.minDivisor
-import lesson6.task1.twoDigitStr
-import java.lang.Math.pow
-import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -200,7 +197,7 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  */
 fun factorize(n: Int): List<Int> {
     var number = n
-    var div = 0
+    var div: Int
     val list = mutableListOf<Int>()
     while (number > 1) {
         div = minDivisor(number)
@@ -217,10 +214,8 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    val list = factorize(n)
-    return list.joinToString(separator = "*")
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
+
 
 /**
  * Средняя
@@ -254,34 +249,7 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
     val list = convert(n, base)
     var result = ""
-    val letters = listOf(
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "h",
-        "i",
-        "j",
-        "k",
-        "l",
-        "m",
-        "n",
-        "o",
-        "p",
-        "q",
-        "r",
-        "s",
-        "t",
-        "u",
-        "v",
-        "w",
-        "x",
-        "y",
-        "z"
-    )
+    val letters = "abcdefghijklmnopqrstuvwxyz"
     for (i in list.indices) {
         if (list[i] >= 10) result += letters[list[i] - 10]
         else result += list[i]
@@ -299,9 +267,16 @@ fun convertToString(n: Int, base: Int): String {
 fun decimal(digits: List<Int>, base: Int): Int {
     var number = 0
     for (i in digits.reversed().indices) {
-        number += (digits.reversed()[i] * base.toDouble().pow(i.toDouble())).toInt()
+        number += digits.reversed()[i] * powInt(base, i)
     }
     return number
+}
+
+fun powInt(n: Int, k: Int): Int {
+    var res = 1
+    for (i in 1..k)
+        res *= n
+    return res
 }
 
 /**
@@ -360,49 +335,37 @@ fun threeSigns(k: Int): MutableList<String> {
     val one = k / 100
     val two = k / 10 % 10
     val three = k % 10
-    when (one) {
-        1 -> res.add("сто")
-        2 -> res.add("двести")
-        3 -> res.add("триста")
-        4 -> res.add("четыреста")
-        5 -> res.add("пятьсот")
-        6 -> res.add("шестьсот")
-        7 -> res.add("семьсот")
-        8 -> res.add("восемьсот")
-        9 -> res.add("девятьсот")
-    }
+    val hundreds =
+        listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    val tens = listOf(
+        "десять",
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто"
+    )
+    val units = listOf("три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val exceptions = listOf(
+        "одиннадцать",
+        "двенадцать",
+        "тринадцать",
+        "четырнадцать",
+        "пятнадцать",
+        "шестнадцать",
+        "семнадцать",
+        "восемнадцать",
+        "девятнадцать"
+    )
+    if (one != 0) res.add(hundreds[one - 1])
     if ((k % 100 <= 10) || (k % 100 >= 20)) {
-        when (two) {
-            1 -> res.add("десять")
-            2 -> res.add("двадцать")
-            3 -> res.add("тридцать")
-            4 -> res.add("сорок")
-            5 -> res.add("пятьдесят")
-            6 -> res.add("шестьдесят")
-            7 -> res.add("семьдесят")
-            8 -> res.add("восемьдесят")
-            9 -> res.add("девяносто")
-        }
-        when (three) {
-            3 -> res.add("три")
-            4 -> res.add("четыре")
-            5 -> res.add("пять")
-            6 -> res.add("шесть")
-            7 -> res.add("семь")
-            8 -> res.add("восемь")
-            9 -> res.add("девять")
-        }
-    } else
-        when (k % 100) {
-            11 -> res.add("одиннадцать")
-            12 -> res.add("двенадцать")
-            13 -> res.add("тринадцать")
-            14 -> res.add("четырнадцать")
-            15 -> res.add("пятнадцать")
-            16 -> res.add("шестнадцать")
-            17 -> res.add("семнадцать")
-            18 -> res.add("восемнадцать")
-            19 -> res.add("девятнадцать")
-        }
+        if (two != 0) res.add(tens[two - 1])
+        if (three >= 3) res.add(units[three - 3])
+    } else {
+        res.add(exceptions[k % 100 - 11])
+    }
     return res
 }
