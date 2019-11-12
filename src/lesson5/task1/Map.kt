@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import java.lang.Math.abs
+
 /**
  * Пример
  *
@@ -312,6 +314,27 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *        )
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+/*{
+    val res = mutableMapOf<String, Set<String>>()
+    for ((name, meetings) in friends) {
+        res[name] = meetings + searchFriends(name, friends, meetings)
+    }
+    return res
+}
+
+fun searchFriends(
+    myName: String,
+    friends: Map<String, Set<String>>,
+    tooFriend: Set<String>
+): Set<String> {
+    val res = mutableSetOf<String>()
+    for (namesFr in friends[myName] ?: error("")) {
+        for (i in friends[namesFr] ?: error("")) {
+            res += i
+        }
+    }
+    return res
+} */
 
 /**
  * Сложная
@@ -330,7 +353,17 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    for (i in list) {
+        val numberN = kotlin.math.abs((number - i).toDouble()).toInt()
+        if (numberN !in list) continue
+        if (list.indexOf(numberN) == list.indexOf(i)) continue
+        for (n in list.subList(i + 1, list.size))
+            if (n == numberN)
+                return list.indexOf(i) to list.indexOf(n)
+    }
+    return -1 to -1
+}
 
 /**
  * Очень сложная
