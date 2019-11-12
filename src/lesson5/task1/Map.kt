@@ -192,21 +192,17 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val res = mutableMapOf<String, Double>()
-    var i = 1
-    var sum: Double
-    var count: Int
+    val count = mutableMapOf<String, Int>()
     for ((stock, price) in stockPrices) {
-        i++
-        if (res[stock] != null) continue
-        sum = 0.0
-        count = 0
-        for (i in stockPrices.indices) {
-            if (stockPrices[i].first == stock) {
-                sum += stockPrices[i].second
-                count++
-            }
-        }
-        res[stock] = sum / count
+        val sum = res[stock]
+        val cnt = count[stock]
+        if (sum == null) res[stock] = price
+        else res[stock] = sum + price
+        if (cnt == null) count[stock] = 1
+        else count[stock] = cnt + 1
+    }
+    for ((stock) in res) {
+        res[stock] = res[stock]!! / count[stock]!!
     }
     return res
 }
@@ -249,10 +245,9 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    val word1 = word.toLowerCase()
-    for (i in word.indices) {
-        if (!chars.any { it.toLowerCase() == word1[i] }) return false
-    }
+    val charsSet = chars.toSet()
+    for (i in word.toLowerCase())
+        if (!charsSet.contains(i) && !charsSet.contains(i.toUpperCase())) return false
     return true
 }
 
@@ -270,14 +265,12 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val res = mutableMapOf<String, Int>()
-    var m: Int?
     for (i in list.indices) {
-        if (res[list[i]] == null) res[list[i]] = 1
-        else {
-            m = res[list[i]]
-            if (m != null) {
-                res[list[i]] = m + 1
-            }
+        val m = res[list[i]]
+        if (m != null) {
+            res[list[i]] = m + 1
+        } else {
+            res[list[i]] = 1
         }
     }
     return res.filter { it.value > 1 }
