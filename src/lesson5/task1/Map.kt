@@ -130,7 +130,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
     for ((key, value) in b)
         if (a[key] == value) a.remove(key)
 }
@@ -191,7 +191,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    var res = mutableMapOf<String, Double>()
+    val res = mutableMapOf<String, Double>()
     var i = 1
     var sum: Double
     var count: Int
@@ -227,7 +227,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    var minPrice = 999999999999999999.9
+    var minPrice = Double.MAX_VALUE
     var nameOfProduct: String? = null
     for ((name, product) in stuff) {
         if (product.first != kind) continue
@@ -269,7 +269,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
-    var res = mutableMapOf<String, Int>()
+    val res = mutableMapOf<String, Int>()
     var m: Int?
     for (i in list.indices) {
         if (res[list[i]] == null) res[list[i]] = 1

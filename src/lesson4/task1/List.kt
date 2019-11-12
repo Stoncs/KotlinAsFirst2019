@@ -311,30 +311,6 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    if (n == 0) return "ноль"
-    val list = mutableListOf<String>()
-    val first = n / 1000
-    val second = n % 1000
-    if (first != 0) {
-        list += (threeSigns(first))
-        if ((first % 100 < 11) || (first % 100 > 20)) when {
-            (first % 10 == 1) -> list.add("одна тысяча")
-            (first % 10 == 2) -> list.add("две тысячи")
-            (first % 10 == 4) || (first % 10 == 3) -> list.add("тысячи")
-            else -> list.add("тысяч")
-        } else list.add("тысяч")
-    }
-    list += (threeSigns(second))
-    if ((second % 10 == 1) && ((second % 100 < 11) || (second % 100 > 20))) list.add("один")
-    if ((second % 10 == 2) && ((second % 100 < 12) || (second % 100 > 20))) list.add("два")
-    return list.joinToString(separator = " ")
-}
-
-fun threeSigns(k: Int): MutableList<String> {
-    val res = mutableListOf<String>()
-    val one = k / 100
-    val two = k / 10 % 10
-    val three = k % 10
     val hundreds =
         listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
     val tens = listOf(
@@ -360,6 +336,37 @@ fun threeSigns(k: Int): MutableList<String> {
         "восемнадцать",
         "девятнадцать"
     )
+    if (n == 0) return "ноль"
+    val list = mutableListOf<String>()
+    val first = n / 1000
+    val second = n % 1000
+    if (first != 0) {
+        list += (threeSigns(first, hundreds, tens, units, exceptions))
+        if ((first % 100 < 11) || (first % 100 > 20)) when {
+            (first % 10 == 1) -> list.add("одна тысяча")
+            (first % 10 == 2) -> list.add("две тысячи")
+            (first % 10 == 4) || (first % 10 == 3) -> list.add("тысячи")
+            else -> list.add("тысяч")
+        } else list.add("тысяч")
+    }
+    list += (threeSigns(second, hundreds, tens, units, exceptions))
+    if ((second % 10 == 1) && ((second % 100 < 11) || (second % 100 > 20))) list.add("один")
+    if ((second % 10 == 2) && ((second % 100 < 12) || (second % 100 > 20))) list.add("два")
+    return list.joinToString(separator = " ")
+}
+
+fun threeSigns(
+    k: Int,
+    hundreds: List<String>,
+    tens: List<String>,
+    units: List<String>,
+    exceptions: List<String>
+): MutableList<String> {
+    val res = mutableListOf<String>()
+    val one = k / 100
+    val two = k / 10 % 10
+    val three = k % 10
+
     if (one != 0) res.add(hundreds[one - 1])
     if ((k % 100 <= 10) || (k % 100 >= 20)) {
         if (two != 0) res.add(tens[two - 1])
