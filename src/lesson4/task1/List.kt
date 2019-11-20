@@ -311,37 +311,12 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    val hundreds =
-        listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-    val tens = listOf(
-        "десять",
-        "двадцать",
-        "тридцать",
-        "сорок",
-        "пятьдесят",
-        "шестьдесят",
-        "семьдесят",
-        "восемьдесят",
-        "девяносто"
-    )
-    val units = listOf("три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-    val exceptions = listOf(
-        "одиннадцать",
-        "двенадцать",
-        "тринадцать",
-        "четырнадцать",
-        "пятнадцать",
-        "шестнадцать",
-        "семнадцать",
-        "восемнадцать",
-        "девятнадцать"
-    )
     if (n == 0) return "ноль"
     val list = mutableListOf<String>()
     val first = n / 1000
     val second = n % 1000
     if (first != 0) {
-        list += (threeSigns(first, hundreds, tens, units, exceptions))
+        list += (threeSigns(first))
         if ((first % 100 < 11) || (first % 100 > 20)) when {
             (first % 10 == 1) -> list.add("одна тысяча")
             (first % 10 == 2) -> list.add("две тысячи")
@@ -349,19 +324,13 @@ fun russian(n: Int): String {
             else -> list.add("тысяч")
         } else list.add("тысяч")
     }
-    list += (threeSigns(second, hundreds, tens, units, exceptions))
+    list += (threeSigns(second))
     if ((second % 10 == 1) && ((second % 100 < 11) || (second % 100 > 20))) list.add("один")
     if ((second % 10 == 2) && ((second % 100 < 12) || (second % 100 > 20))) list.add("два")
     return list.joinToString(separator = " ")
 }
 
-fun threeSigns(
-    k: Int,
-    hundreds: List<String>,
-    tens: List<String>,
-    units: List<String>,
-    exceptions: List<String>
-): MutableList<String> {
+fun threeSigns(k: Int): MutableList<String> {
     val res = mutableListOf<String>()
     val one = k / 100
     val two = k / 10 % 10
@@ -376,3 +345,29 @@ fun threeSigns(
     }
     return res
 }
+
+val hundreds =
+    listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+val tens = listOf(
+    "десять",
+    "двадцать",
+    "тридцать",
+    "сорок",
+    "пятьдесят",
+    "шестьдесят",
+    "семьдесят",
+    "восемьдесят",
+    "девяносто"
+)
+val units = listOf("три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+val exceptions = listOf(
+    "одиннадцать",
+    "двенадцать",
+    "тринадцать",
+    "четырнадцать",
+    "пятнадцать",
+    "шестнадцать",
+    "семнадцать",
+    "восемнадцать",
+    "девятнадцать"
+)
