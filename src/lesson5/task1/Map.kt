@@ -229,7 +229,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var nameOfProduct: String? = null
     for ((name, product) in stuff) {
         if (product.first != kind) continue
-        if (product.second < minPrice) {
+        if (product.second <= minPrice) {
             minPrice = product.second
             nameOfProduct = name
         }
@@ -314,27 +314,7 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *        )
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
-/*{
-    val res = mutableMapOf<String, Set<String>>()
-    for ((name, meetings) in friends) {
-        res[name] = meetings + searchFriends(name, friends, meetings)
-    }
-    return res
-}
 
-fun searchFriends(
-    myName: String,
-    friends: Map<String, Set<String>>,
-    tooFriend: Set<String>
-): Set<String> {
-    val res = mutableSetOf<String>()
-    for (namesFr in friends[myName] ?: error("")) {
-        for (i in friends[namesFr] ?: error("")) {
-            res += i
-        }
-    }
-    return res
-} */
 
 /**
  * Сложная
@@ -354,13 +334,13 @@ fun searchFriends(
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    for (i in list) {
-        val numberN = kotlin.math.abs((number - i).toDouble()).toInt()
-        if (numberN !in list) continue
-        if (list.indexOf(numberN) == list.indexOf(i)) continue
-        for (n in list.subList(i + 1, list.size))
-            if (n == numberN)
-                return list.indexOf(i) to list.indexOf(n)
+    val pairs = mutableMapOf<Int, Int>()
+    for (i in list.indices) {
+        if (list[i] > number) continue
+        if (pairs[number - list[i]] == null)
+            pairs[list[i]] = i
+        else
+            return pairs[number - list[i]]!! to i
     }
     return -1 to -1
 }
