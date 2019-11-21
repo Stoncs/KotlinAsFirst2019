@@ -4,6 +4,7 @@ package lesson6.task1
 
 import lesson2.task2.daysInMonth
 import java.lang.NumberFormatException
+import java.lang.StringBuilder
 
 /**
  * Пример
@@ -75,25 +76,29 @@ fun main() {
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
     if (parts.size != 3) return ""
-    val day = parts[0].toInt()
-    val month = when (parts[1]) {
-        "января" -> 1
-        "февраля" -> 2
-        "марта" -> 3
-        "апреля" -> 4
-        "мая" -> 5
-        "июня" -> 6
-        "июля" -> 7
-        "августа" -> 8
-        "сентября" -> 9
-        "октября" -> 10
-        "ноября" -> 11
-        "декабря" -> 12
-        else -> return ""
+    try {
+        val day = parts[0].toInt()
+        val month = when (parts[1]) {
+            "января" -> 1
+            "февраля" -> 2
+            "марта" -> 3
+            "апреля" -> 4
+            "мая" -> 5
+            "июня" -> 6
+            "июля" -> 7
+            "августа" -> 8
+            "сентября" -> 9
+            "октября" -> 10
+            "ноября" -> 11
+            "декабря" -> 12
+            else -> return ""
+        }
+        val year = parts[2].toInt()
+        return if (day in 0..daysInMonth(month, year)) "${twoDigitStr(day)}.${twoDigitStr(month)}.$year"
+        else ""
+    } catch (e: NumberFormatException) {
+        return ""
     }
-    val year = parts[2].toInt()
-    return if (day in 0..daysInMonth(month, year)) "${twoDigitStr(day)}.${twoDigitStr(month)}.$year"
-    else ""
 }
 
 /**
@@ -148,7 +153,25 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    var res = mutableListOf<Char>()
+    val validChar = listOf('-', '(', ')', ' ')
+    var switchNumInBrackets = false
+    var switchBrackets = false
+    for (char in phone) {
+        if ((char == '+') || char.isDigit()) {
+            if (switchBrackets) switchNumInBrackets = true
+            res.add(char)
+            continue
+        }
+        if ((char !in validChar) && !char.isDigit()) return ""
+        if ((char == '(') && switchBrackets) return ""
+        if (char == '(') switchBrackets = true
+        if ((char == ')') && (!switchBrackets || !switchNumInBrackets)) return ""
+    }
+    return res.joinToString(separator = "")
+}
+
 
 /**
  * Средняя
