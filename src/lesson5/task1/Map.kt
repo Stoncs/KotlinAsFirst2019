@@ -203,8 +203,8 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
         if (cnt == null) count[stock] = 1
         else count[stock] = cnt + 1
     }
-    for ((stock) in res) {
-        res[stock] = res[stock]!! / count[stock]!!
+    for ((stock, value) in res) {
+        res[stock] = value / count[stock]!!
     }
     return res
 }
