@@ -3,8 +3,9 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import java.lang.IllegalArgumentException
 import java.lang.NumberFormatException
-import java.lang.StringBuilder
+
 
 /**
  * Пример
@@ -158,9 +159,15 @@ fun flattenPhoneNumber(phone: String): String {
     val validChar = listOf('-', '(', ')', ' ')
     var switchNumInBrackets = false
     var switchBrackets = false
+    var switchNumber = false
     for (char in phone) {
-        if ((char == '+') || char.isDigit()) {
+        if (char == '+') {
+            res.add(char)
+            continue
+        }
+        if (char.isDigit()) {
             if (switchBrackets) switchNumInBrackets = true
+            switchNumber = true
             res.add(char)
             continue
         }
@@ -169,7 +176,8 @@ fun flattenPhoneNumber(phone: String): String {
         if (char == '(') switchBrackets = true
         if ((char == ')') && (!switchBrackets || !switchNumInBrackets)) return ""
     }
-    return res.joinToString(separator = "")
+    return if (switchNumber) res.joinToString(separator = "")
+    else ""
 }
 
 
@@ -196,7 +204,20 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val reg = Regex("""(\d)+ ([%+-]+)""")
+    if (!jumps.contains(reg)) return -1
+    val res = reg.findAll(jumps, 0)
+    var max = 0
+    for (i in res) {
+        val res = i.value
+        if (res[res.length - 1] == '+') {
+            val num = Regex("""\d+""").find(res)?.value!!.toInt()
+            if (num > max) max = num
+        }
+    }
+    return max
+}
 
 /**
  * Сложная
@@ -207,7 +228,41 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    if (expression.matches(Regex("""[^\d\-+\s]"""))) throw IllegalArgumentException()
+    val list = expression.split(" ")
+    var l = -1
+    for (i in list) {
+        l++
+        if ((l % 2 == 0) && ((i[0] == '+') || (i[0] == '-'))) throw IllegalArgumentException()
+    }
+    var sum = if (isNumber(list[0])) list[0].toInt()
+    else throw IllegalArgumentException()
+    var plusOrMinus = false
+    for (i in list.indices.drop(1)) {
+        if (i % 2 == 1) {
+            if ((list[i] != "+") && list[i] != "-") throw IllegalArgumentException()
+            else when (list[i]) {
+                "+" -> plusOrMinus = true
+                "-" -> plusOrMinus = false
+            }
+        } else {
+            if (!isNumber(list[i])) throw IllegalArgumentException()
+            else if (plusOrMinus) sum += list[i].toInt()
+            else sum -= list[i].toInt()
+        }
+    }
+    return sum
+}
+
+fun isNumber(s: String): Boolean {
+    try {
+        s.toInt()
+    } catch (e: Error) {
+        return false
+    }
+    return true
+}
 
 /**
  * Сложная
