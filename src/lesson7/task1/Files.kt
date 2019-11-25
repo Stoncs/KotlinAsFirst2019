@@ -91,6 +91,8 @@ fun sibilants(inputName: String, outputName: String) {
         for (letter in File(inputName).readText()) {
             if (letter in "ЖжШшЩщЧч") {
                 rule = true
+                it.write(letter.toString())
+                continue
             }
             rule = if (rule && (letter in "ЫыЯяЮю")) {
                 it.write(replacement[letter].toString())
