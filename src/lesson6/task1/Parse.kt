@@ -155,7 +155,7 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    var res = mutableListOf<Char>()
+    val res = mutableListOf<Char>()
     val validChar = listOf('-', '(', ')', ' ')
     var switchNumInBrackets = false
     var switchBrackets = false
