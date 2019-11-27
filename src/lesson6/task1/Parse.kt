@@ -79,23 +79,10 @@ fun dateStrToDigit(str: String): String {
     if (parts.size != 3) return ""
     try {
         val day = parts[0].toInt()
-        val month = when (parts[1]) {
-            "января" -> 1
-            "февраля" -> 2
-            "марта" -> 3
-            "апреля" -> 4
-            "мая" -> 5
-            "июня" -> 6
-            "июля" -> 7
-            "августа" -> 8
-            "сентября" -> 9
-            "октября" -> 10
-            "ноября" -> 11
-            "декабря" -> 12
-            else -> return ""
-        }
+        val month1 = if (parts[1] in month) month.indexOf(parts[1]) + 1
+        else return ""
         val year = parts[2].toInt()
-        return if (day in 0..daysInMonth(month, year)) "${twoDigitStr(day)}.${twoDigitStr(month)}.$year"
+        return if (day in 0..daysInMonth(month1, year)) "${twoDigitStr(day)}.${twoDigitStr(month1)}.$year"
         else ""
     } catch (e: NumberFormatException) {
         return ""
@@ -117,28 +104,30 @@ fun dateDigitToStr(digital: String): String {
     if (parts.size != 3) return ""
     try {
         val day = parts[0].toInt()
-        val month = when (parts[1].toInt()) {
-            1 -> "января"
-            2 -> "февраля"
-            3 -> "марта"
-            4 -> "апреля"
-            5 -> "мая"
-            6 -> "июня"
-            7 -> "июля"
-            8 -> "августа"
-            9 -> "сентября"
-            10 -> "октября"
-            11 -> "ноября"
-            12 -> "декабря"
-            else -> return ""
-        }
+        val month1 = if (parts[1].toInt() in 1..12) month[parts[1].toInt() - 1]
+        else return ""
         val year = parts[2]
-        return if (day in 0..daysInMonth(parts[1].toInt(), year.toInt())) ("$day $month $year")
+        return if (day in 0..daysInMonth(parts[1].toInt(), year.toInt())) ("$day $month1 $year")
         else ""
     } catch (e: NumberFormatException) {
         return ""
     }
 }
+
+val month = listOf(
+    "января",
+    "февраля",
+    "марта",
+    "апреля",
+    "мая",
+    "июня",
+    "июля",
+    "августа",
+    "сентября",
+    "октября",
+    "ноября",
+    "декабря"
+)
 
 /**
  * Средняя
@@ -230,40 +219,24 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     if (expression == "") throw IllegalArgumentException()
-    if (expression.matches(Regex("""[^\d\-+\s]"""))) throw IllegalArgumentException()
+    if (!expression.matches(Regex("""(\d+ [+-] )+\d+|\d+"""))) throw IllegalArgumentException()
     val list = expression.split(" ")
-    var l = -1
-    for (i in list) {
-        l++
-        if ((l % 2 == 0) && ((i[0] == '+') || (i[0] == '-'))) throw IllegalArgumentException()
-    }
-    var sum = if (isNumber(list[0])) list[0].toInt()
-    else throw IllegalArgumentException()
+    var sum = list[0].toInt()
     var plusOrMinus = false
     for (i in list.indices.drop(1)) {
         if (i % 2 == 1) {
-            if ((list[i] != "+") && list[i] != "-") throw IllegalArgumentException()
-            else when (list[i]) {
+            when (list[i]) {
                 "+" -> plusOrMinus = true
                 "-" -> plusOrMinus = false
             }
         } else {
-            if (!isNumber(list[i])) throw IllegalArgumentException()
-            else if (plusOrMinus) sum += list[i].toInt()
+            if (plusOrMinus) sum += list[i].toInt()
             else sum -= list[i].toInt()
         }
     }
     return sum
 }
 
-fun isNumber(s: String): Boolean {
-    try {
-        s.toInt()
-    } catch (e: Error) {
-        return false
-    }
-    return true
-}
 
 /**
  * Сложная

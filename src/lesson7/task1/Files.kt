@@ -59,7 +59,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         res[i] = 0
     }
     for (line in File(inputName).readLines()) {
-        for (search in substrings) {
+        for ((search) in res) {
             val searchWord = search.toLowerCase()
             var count = 0
             for (i in line.windowed(search.length))
@@ -86,7 +86,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  */
 fun sibilants(inputName: String, outputName: String) {
     var rule = false
-    val replacement = mapOf<Char, Char>('Ы' to 'И', 'ы' to 'и', 'Я' to 'А', 'я' to 'а', 'Ю' to 'У', 'ю' to 'у')
+    val replacement = mapOf('Ы' to 'И', 'ы' to 'и', 'Я' to 'А', 'я' to 'а', 'Ю' to 'У', 'ю' to 'у')
     File(outputName).bufferedWriter().use {
         for (letter in File(inputName).readText()) {
             if (letter in "ЖжШшЩщЧч") {
@@ -160,7 +160,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             if (Regex("""\s+""").replace(line, " ").length >= max) max = line.length
         }
         for (line in File(inputName).readLines()) {
-            val new = Regex("""\s+""").replace(line, "")
+            val new = Regex("""\s+""").replace(line, " ")
             if (line.isEmpty()) {
                 it.newLine()
                 continue
@@ -169,22 +169,31 @@ fun alignFileByWidth(inputName: String, outputName: String) {
                 it.newLine()
                 continue
             }
-            val words = line.split(Regex("""\s+""")).drop(1)
+            var words = line.split(Regex("""\s+"""))
+            if (words[0] == "") words = words.drop(1)
             if (words.size == 1) {
                 it.write(words[0])
                 it.newLine()
                 continue
             }
-            val needsSpace = (max - new.length) / (words.size - 1)
-            var count = 0
-            for (i in words) {
-                count++
-                it.write(i)
-                if (count == words.size) break
-                for (n in 1..needsSpace) {
-                    it.write(" ")
+            var needsSpace = max - new.length - 1
+            val spaces = mutableListOf<String>()
+            for (i in words.indices - 1) {
+                spaces.add(" ")
+            }
+            while (needsSpace != 0) {
+                for (i in 0..words.size - 2) {
+                    spaces[i] = spaces[i] + " "
+                    needsSpace--
+                    if (needsSpace == 0) break
                 }
             }
+
+            for (i in 0..words.size - 2) {
+                it.write(words[i])
+                it.write(spaces[i])
+            }
+            it.write(words.last())
             it.newLine()
         }
     }
