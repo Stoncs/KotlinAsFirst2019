@@ -76,6 +76,28 @@ Basic, Ruby, Swift.
             mapOf(" " to 117, "ные" to 2, " Р" to 3, "р" to 27),
             countSubstrings("input/substrings_in1.txt", listOf(" ", "ные", " Р", "р"))
         )
+        assertEquals(
+            mapOf("аб" to 3, "вх" to 0, "дб" to 0, "СЖС" to 2, "да" to 1, "еба" to 1, "Цач" to 1, "тб" to 1, "бябЩа" to 0, "обР" to 1,
+                "вбгрбвДб" to 0, "вб" to 2, "ВЧЕЮЙю" to 2),
+            countSubstrings(
+                "input/substrings_in3.txt", listOf(
+                    "аб",
+                    "вх",
+                    "дб",
+                    "СЖС",
+                    "да",
+                    "аб",
+                    "еба",
+                    "Цач",
+                    "тб",
+                    "бябЩа",
+                    "обР",
+                    "вбгрбвДб",
+                    "вб",
+                    "ВЧЕЮЙю"
+                )
+            )
+        )
     }
 
     @Test

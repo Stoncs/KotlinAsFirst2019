@@ -79,10 +79,10 @@ fun dateStrToDigit(str: String): String {
     if (parts.size != 3) return ""
     try {
         val day = parts[0].toInt()
-        val month1 = if (parts[1] in month) month.indexOf(parts[1]) + 1
+        val month = if (parts[1] in monthList) monthList.indexOf(parts[1]) + 1
         else return ""
         val year = parts[2].toInt()
-        return if (day in 0..daysInMonth(month1, year)) "${twoDigitStr(day)}.${twoDigitStr(month1)}.$year"
+        return if (day in 0..daysInMonth(month, year)) "${twoDigitStr(day)}.${twoDigitStr(month)}.$year"
         else ""
     } catch (e: NumberFormatException) {
         return ""
@@ -104,17 +104,17 @@ fun dateDigitToStr(digital: String): String {
     if (parts.size != 3) return ""
     try {
         val day = parts[0].toInt()
-        val month1 = if (parts[1].toInt() in 1..12) month[parts[1].toInt() - 1]
+        val month = if (parts[1].toInt() in 1..12) monthList[parts[1].toInt() - 1]
         else return ""
         val year = parts[2]
-        return if (day in 0..daysInMonth(parts[1].toInt(), year.toInt())) ("$day $month1 $year")
+        return if (day in 0..daysInMonth(parts[1].toInt(), year.toInt())) ("$day $month $year")
         else ""
     } catch (e: NumberFormatException) {
         return ""
     }
 }
 
-val month = listOf(
+val monthList = listOf(
     "января",
     "февраля",
     "марта",
