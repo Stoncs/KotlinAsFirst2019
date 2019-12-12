@@ -181,7 +181,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             for (i in words.indices - 1) {
                 spaces.add(" ")
             }
-            while (needsSpace != 0) {
+            while (needsSpace > 0) {
                 for (i in 0..words.size - 2) {
                     spaces[i] = spaces[i] + " "
                     needsSpace--
@@ -217,7 +217,28 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    var map = mutableMapOf<String, Int>()
+    val result = mutableMapOf<String, Int>()
+    for (line in File(inputName).readLines()) {
+        val words = line.split(Regex("""[^a-zA-zА-Яа-яёЁ]+"""))
+        for (word: String in words) {
+
+            val iWord = word.toLowerCase()
+            if (map[iWord] == null) map[iWord] = 1
+            else map[iWord] = map[iWord]!! + 1
+        }
+    }
+    map.remove("")
+    map = map.toList().sortedByDescending { (key, value) -> value }.toMap().toMutableMap()
+    var i = 0
+    for ((word, count) in map) {
+        i++
+        result[word] = count
+        if (i == 20) break
+    }
+    return result
+}
 
 /**
  * Средняя
