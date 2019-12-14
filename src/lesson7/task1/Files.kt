@@ -162,7 +162,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
         }
         for (line in File(inputName).readLines()) {
             val new = Regex("""\s+""").replace(line, " ")
-            if (line.isEmpty() || new.isEmpty) {
+            if (line.isEmpty() || new.isEmpty()) {
                 it.newLine()
                 continue
             }
