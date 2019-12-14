@@ -146,6 +146,20 @@ Basic, Ruby, Swift.
     @Test
     @Tag("Hard")
     fun alignFileByWidth() {
+        alignFileByWidth("input/width_in3.txt", "temp.txt")
+        assertFileContent(
+            "temp.txt",
+            "Андрей, привет\nда,       могу"
+        )
+        File("temp.txt").delete()
+
+        alignFileByWidth("input/width_in2.txt", "temp.txt")
+        assertFileContent(
+            "temp.txt",
+            "аб, аб --- аб - АБ - АБ\nАБ         --        аб\nаб"
+        )
+        File("temp.txt").delete()
+
         alignFileByWidth("input/width_in1.txt", "temp.txt")
         assertFileContent(
             "temp.txt",
@@ -169,7 +183,6 @@ Basic, Ruby, Swift.
 между                более               правой               парой               соседних               слов."""
         )
         File("temp.txt").delete()
-
     }
 
     @Test
