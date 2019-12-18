@@ -2,6 +2,8 @@
 
 package lesson8.task2
 
+import java.lang.IllegalArgumentException
+
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
  * Поэтому, обе координаты клетки (горизонталь row, вертикаль column) могут находиться в пределах от 1 до 8.
@@ -22,8 +24,14 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String = TODO()
+    fun notation(): String {
+        if (!Square(column, row).inside()) return ""
+        val newColumn = letters[column - 1]
+        return "$newColumn$row"
+    }
 }
+
+val letters = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
 
 /**
  * Простая
@@ -32,7 +40,14 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square {
+    if (notation.length != 2 || notation[0] !in "abcdefgh" || notation[1] !in "12345678") throw IllegalArgumentException()
+    val first = letters.indexOf(notation[0]) + 1
+    val second = notation[1].toString().toInt()
+    val box = Square(first, second)
+    if (!box.inside()) throw IllegalArgumentException()
+    return box
+}
 
 /**
  * Простая
@@ -73,7 +88,13 @@ fun rookMoveNumber(start: Square, end: Square): Int = TODO()
  *          rookTrajectory(Square(3, 5), Square(8, 5)) = listOf(Square(3, 5), Square(8, 5))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun rookTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun rookTrajectory(start: Square, end: Square): List<Square> {
+    if (start == end) return listOf(start)
+    if (start.column == end.column || start.row == end.row) return listOf(start, end)
+    var res = mutableListOf(start, end)
+    res.add(1, Square(start.column, end.row))
+    return res
+}
 
 /**
  * Простая
