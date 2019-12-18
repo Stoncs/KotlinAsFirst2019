@@ -181,14 +181,27 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
     if (start == end) return listOf(start)
     val res = mutableListOf(start)
     var position = start
-    while (position.column != end.column || position.row != end.row) {
-        position = if (position.column > end.column) Square(position.column - 1, position.row)
-        else Square(position.column + 1, position.row)
-        position = if (position.row > end.row) Square(position.column, position.row - 1)
-        else Square(position.column, position.row + 1)
-        res.add(position)
-    }
-    if (position.column == end.column) while (position != end){
+    if (start.column < end.column && start.row < end.row)
+        while (position.column != end.column && position.row != end.row) {
+            position = Square(position.column + 1, position.row + 1)
+            res.add(position)
+        }
+    if (start.column > end.column && start.row < end.row)
+        while (position.column != end.column && position.row != end.row) {
+            position = Square(position.column - 1, position.row + 1)
+            res.add(position)
+        }
+    if (start.column < end.column && start.row > end.row)
+        while (position.column != end.column && position.row != end.row) {
+            position = Square(position.column + 1, position.row - 1)
+            res.add(position)
+        }
+    if (start.column > end.column && start.row > end.row)
+        while (position.column != end.column && position.row != end.row) {
+            position = Square(position.column - 1, position.row - 1)
+            res.add(position)
+        }
+    if (position.column == end.column) while (position != end) {
         position = if (position.row > end.row) Square(position.column, position.row - 1)
         else Square(position.column, position.row + 1)
         res.add(position)
