@@ -44,9 +44,7 @@ fun square(notation: String): Square {
     if (notation.length != 2 || notation[0] !in "abcdefgh" || notation[1] !in "12345678") throw IllegalArgumentException()
     val first = letters.indexOf(notation[0]) + 1
     val second = notation[1].toString().toInt()
-    val box = Square(first, second)
-    if (!box.inside()) throw IllegalArgumentException()
-    return box
+    return Square(first, second)
 }
 
 /**
