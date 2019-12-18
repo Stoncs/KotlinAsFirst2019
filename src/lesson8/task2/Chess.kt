@@ -91,7 +91,7 @@ fun rookMoveNumber(start: Square, end: Square): Int = TODO()
 fun rookTrajectory(start: Square, end: Square): List<Square> {
     if (start == end) return listOf(start)
     if (start.column == end.column || start.row == end.row) return listOf(start, end)
-    var res = mutableListOf(start, end)
+    val res = mutableListOf(start, end)
     res.add(1, Square(start.column, end.row))
     return res
 }
@@ -177,7 +177,28 @@ fun kingMoveNumber(start: Square, end: Square): Int = TODO()
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun kingTrajectory(start: Square, end: Square): List<Square> {
+    if (start == end) return listOf(start)
+    val res = mutableListOf(start)
+    var position = start
+    while (position.column != end.column || position.row != end.row) {
+        position = if (position.column > end.column) Square(position.column - 1, position.row)
+        else Square(position.column + 1, position.row)
+        position = if (position.row > end.row) Square(position.column, position.row - 1)
+        else Square(position.column, position.row + 1)
+        res.add(position)
+    }
+    if (position.column == end.column) while (position != end){
+        position = if (position.row > end.row) Square(position.column, position.row - 1)
+        else Square(position.column, position.row + 1)
+        res.add(position)
+    } else while (position != end) {
+        position = if (position.column > end.column) Square(position.column - 1, position.row)
+        else Square(position.column + 1, position.row)
+        res.add(position)
+    }
+    return res
+}
 
 /**
  * Сложная
